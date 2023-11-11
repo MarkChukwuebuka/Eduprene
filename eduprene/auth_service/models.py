@@ -1,26 +1,12 @@
 import uuid
 
-from django.contrib.auth.base_user import BaseUserManager
 from django.db import models
-from django.contrib.auth.models import AbstractUser, Group
+from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 
 from constants.other_constants import SUBSCRIPTION_STATUS, REFERRAL_STATUS
 from subscriptions.models import Subscription
 
-
-# class CustomUserManager(BaseUserManager):
-#
-#     def create_superuser(self, email, password=None, **extra_fields):
-#         extra_fields.setdefault('is_staff', True)
-#         extra_fields.setdefault('is_superuser', True)
-#
-#         if extra_fields.get('is_staff') is not True:
-#             raise ValueError("Superuser must have is_staff=True.")
-#         if extra_fields.get('is_superuser') is not True:
-#             raise ValueError("Superuser must have is_superuser=True.")
-#
-#         return self.create_user(email, password, **extra_fields)
 
 class RegisterLogs(models.Model):
     id = models.CharField(max_length=36, primary_key=True, null=False)
@@ -43,11 +29,11 @@ class RegisterLogs(models.Model):
     class Meta:
         verbose_name_plural = "Register Logs"
 
+
 class User(AbstractUser):
     id = models.CharField(max_length=36, primary_key=True, null=False)
     ip_address = models.GenericIPAddressField(blank=True, null=True)
     created_at = models.DateTimeField(default=timezone.now)
-
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -68,6 +54,7 @@ class UserAccount(models.Model):
     class Meta:
         verbose_name_plural = "Users Accounts"
 
+
 class UserSubscriptions(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     subscription = models.ForeignKey(Subscription, on_delete=models.SET_NULL, null=True)
@@ -76,6 +63,7 @@ class UserSubscriptions(models.Model):
 
     class Meta:
         verbose_name_plural = "Users Subscriptions"
+
 
 class Referral(models.Model):
     REFERRAL_STATUS_CHOICES = [(i, REFERRAL_STATUS[i]) for i in REFERRAL_STATUS]
