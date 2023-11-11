@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     # 3rd-party
     'rest_framework',
+    'cacheops',
 
     # Self-generated
     'auth_service',
