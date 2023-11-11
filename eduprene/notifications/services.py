@@ -6,7 +6,7 @@ def register_notification_service(user, channel, event, data=None):
         data = {}
 
     try:
-        new_notification = Notification(user, channel, event, data)
+        new_notification = Notification.objects.create(user, channel, event, data)
         new_notification.save()
 
         return True
