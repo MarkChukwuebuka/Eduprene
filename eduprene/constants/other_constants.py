@@ -1,4 +1,5 @@
 EMAIL_NOT_SENT = 'Email not sent, try again!'
+OTP_SENT_TO_EMAIL = 'OTP Sent to email'
 
 REFERRAL_STATUS = {
     "PENDING": "Pending",
@@ -17,12 +18,24 @@ NOTIFICATION_CHANNELS = {
 }
 
 NOTIFICATION_EVENTS = {
-    "SIGNUP": "SIGNUP",
-    "SIGNUP_OTP": "SIGNUP OTP",
+    "REGISTER": "REGISTER",
+    "REGISTER_OTP": "REGISTER OTP",
     "PASSWORD_RESET": "PASSWORD RESET"
 }
 
 GENERAL_STATUS = {
     "SUCCESS": "Success",
     "FAILED": "Failed"
+}
+
+EMAIL_SUBJECTS = {
+    "REGISTER_OTP_SENT": "Eduprene OTP"
+}
+
+ERROR_MESSAGES = {
+    "INTERNAL_SERVER_ERROR": "Internal Server Error!"
+}
+
+CACHE_PREFIXES = {
+    "REGISTER_LOGS": "REGISTER_LOGS"
 }

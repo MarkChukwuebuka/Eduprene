@@ -41,7 +41,6 @@ INSTALLED_APPS = [
 
     # 3rd-party
     'rest_framework',
-    'cacheops',
 
     # Self-generated
     'auth_service',
@@ -131,20 +130,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'auth_service.User'
 
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-        },
-    },
-    "root": {
-        "handlers": ["console"],
-        "level": "WARNING",
-    },
-}
-
 # Email Setup
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.environ.get('EMAIL_HOST')
@@ -154,12 +139,12 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
 
+EMAIL_DEBUG = os.getenv('DEBUG')
+
 # Caching implementation
-# https://pypi.org/project/django-cacheops/7.0.2
-CACHEOPS_REDIS = os.getenv('REDIS_URI')
-CACHEOPS_DEFAULTS = {
-    'timeout': 60*10
-}
-CACHEOPS = {
-    '*.*': {}
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": os.getenv("REDIS_URI")
+    }
 }

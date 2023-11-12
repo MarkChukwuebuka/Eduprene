@@ -18,6 +18,7 @@ class RegisterLogs(models.Model):
 
     otp = models.CharField(max_length=100, null=False)
     otp_requested_at = models.DateTimeField(null=False)
+    otp_verified = models.BooleanField(default=False)
 
     referred_by = models.CharField(max_length=10, default=None, null=True)
 
