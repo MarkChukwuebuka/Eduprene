@@ -8,7 +8,7 @@ class CacheUtil:
 
     @staticmethod
     def set_cache_value(prefix, key, value, timeout=None):
-        if timeout is not None:
+        if timeout is None:
             timeout = 600  # Store key for 10 minutes in cache
 
         cache_key = CacheUtil.generate_cache_key(prefix, key)
@@ -28,7 +28,8 @@ class CacheUtil:
 
         if not data:
             value_data, error = value_callback
+
             if value_data is not None:
-                data = cache.get_or_set(cache_key, value_callback, timeout)
+                data = cache.get_or_set(cache_key, value_data, timeout)
 
         return data, error

@@ -6,9 +6,9 @@ from django.contrib.auth.hashers import make_password
 
 
 class RegisterSerializer(serializers.ModelSerializer):
-    first_name = serializers.CharField(write_only=True)
-    last_name = serializers.CharField(write_only=True)
-    password = serializers.CharField(min_length=6, write_only=True)
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+    password = serializers.CharField(min_length=6)
 
     class Meta:
         model = User
@@ -26,5 +26,9 @@ class RegisterSerializer(serializers.ModelSerializer):
                 'Password not secure! Must contain minimum of 6 characters, an uppercase, a lowercase, a number, '
                 'and a symbol')
 
-        hashed_password = make_password(value)
-        return hashed_password
+        password = make_password(value)
+        return password
+
+
+class RegisterSerializerResponse(serializers.Serializer):
+    email = serializers.CharField()

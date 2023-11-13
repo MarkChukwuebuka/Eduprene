@@ -1,6 +1,5 @@
 import logging
-from utils.otp_utils import generate_otp
-from auth_service.serializers import RegisterSerializer
+from auth_service.serializers import RegisterSerializer, RegisterSerializerResponse
 from auth_service.services import add_registration_log
 from response import bad_request_with_message, server_error, with_data, bad_request_with_data, with_message_and_data
 from constants.other_constants import OTP_SENT_TO_EMAIL
@@ -14,7 +13,7 @@ def register_handler(request):
             data = register_serializer.data
 
             new_user_log, status = add_registration_log(data)
-            log_serializer = RegisterSerializer(new_user_log)
+            log_serializer = RegisterSerializerResponse(new_user_log)
 
             if not status:
                 # Returns bad request if user exists and has been verified

@@ -32,7 +32,8 @@ def add_registration_log(data):
     email = data['email']
     log, error = CacheUtil.get_cache_value_or_default(prefix=CACHE_PREFIXES['REGISTER_LOGS'], key=email,
                                                       value_callback=get_registration_log(email))
-    if log.otp_verified:
+
+    if log and log.otp_verified:
         return log, False
 
     generated_otp, hashed_otp = generate_otp()
@@ -55,7 +56,7 @@ def add_registration_log(data):
     log.otp = generated_otp
 
     # Send Email with OTP
-    send_registration_otp(log)
+    # send_registration_otp(log)
 
     print(f"{generated_otp=}")
     return log, True
