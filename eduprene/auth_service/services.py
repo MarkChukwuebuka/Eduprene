@@ -1,9 +1,14 @@
+from datetime import datetime as dt
+
 from .models import RegisterLogs
+
 from constants.other_constants import EMAIL_SUBJECTS, NOTIFICATION_EVENTS, CACHE_PREFIXES
-from notifications.controllers import EmailService
+
 from utils.otp_utils import check_otp_time_expired, generate_otp
 from utils.cache_utils import CacheUtil
-from datetime import datetime as dt
+
+from notifications.controllers import EmailService
+from notifications.tasks import email_queue
 
 
 def get_registration_log(email):
@@ -17,8 +22,8 @@ def get_registration_log(email):
 
 
 def send_registration_otp(log):
-    send_otp = EmailService.email_notification_handler(
-        log,
+    send_otp = email_queue.delay(
+        email=log.email,
         subject=EMAIL_SUBJECTS['REGISTER_OTP_SENT'],
         message=f"Your One Time Password is {log.otp}. This will expire in 5 minutes.",
         event=NOTIFICATION_EVENTS['REGISTER_OTP']
@@ -56,7 +61,7 @@ def add_registration_log(data):
     log.otp = generated_otp
 
     # Send Email with OTP
-    # send_registration_otp(log)
+    send_registration_otp(log)
 
     print(f"{generated_otp=}")
     return log, True

@@ -145,6 +145,8 @@ EMAIL_DEBUG = os.getenv('DEBUG')
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": os.getenv("REDIS_URI")
+        "LOCATION": f"{os.getenv('REDIS_URI')}/{os.getenv('REDIS_DB_PORT')}"
     }
 }
+
+CELERY_BROKER_URL = f"{os.getenv('REDIS_URI')}/{os.getenv('REDIS_CELERY_PORT')}"
