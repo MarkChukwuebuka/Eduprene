@@ -4,6 +4,7 @@ from auth_service.services import add_registration_log
 from response import bad_request_with_message, server_error, with_data, bad_request_with_data, with_message_and_data
 from constants.other_constants import OTP_SENT_TO_EMAIL
 
+
 def register_handler(request):
     try:
         register_serializer = RegisterSerializer(data=request.data)

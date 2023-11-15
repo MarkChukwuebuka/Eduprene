@@ -11,7 +11,6 @@ from utils.cache_utils import CacheUtil
 
 @shared_task
 def email_queue(email, subject, message, event):
-    print('in here')
     try:
         mail, error = EmailService.email_notification_handler(email, subject, message)
 
