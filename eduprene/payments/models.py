@@ -15,6 +15,7 @@ class Banks(models.Model):
     class Meta:
         verbose_name_plural = "Banks"
 
+
 class UserBankAccount(models.Model):
     id = models.CharField(max_length=36, primary_key=True, null=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE)

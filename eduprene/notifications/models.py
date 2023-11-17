@@ -7,7 +7,7 @@ from django.utils import timezone
 
 # Create your models here.
 class Notification(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    email = models.CharField(max_length=50, null=True)
     channel = models.CharField(max_length=15, null=True)
     event = models.CharField(max_length=50, null=False)
     data = models.JSONField()

@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  eduprene_server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: eduprene_web
+    command: bash -c "python eduprene/manage.py makemigrations && python eduprene/manage.py migrate && python eduprene/manage.py runserver 0.0.0.0:8000"
+    ports:
+      - 8002:8000
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+
+  redis:
+    restart: always
+    image: redis:7-alpine
+    ports:
+      - 6380:6379
+
+  celery_worker:
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: eduprene_celery_worker
+    command: bash -c "cd eduprene && celery -A eduprene worker -l info"
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+
