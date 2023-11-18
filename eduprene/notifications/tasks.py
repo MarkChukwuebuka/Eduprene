@@ -1,13 +1,11 @@
 import logging
-
 from celery import shared_task
 
 from .controllers import EmailService
 from .services import register_notification_service
 from constants.other_constants import NOTIFICATION_CHANNELS, GENERAL_STATUS
 
-from utils.cache_utils import CacheUtil
-
+logger = logging.getLogger(__name__)
 
 @shared_task
 def email_queue(email, subject, message, event):
@@ -24,8 +22,10 @@ def email_queue(email, subject, message, event):
         }
         register_notification_queue(email, NOTIFICATION_CHANNELS['EMAIL'], event, data)
 
+        return mail
+
     except Exception as e:
-        logging.error(e)
+        logger.exception("An error occured in celery: ", str(e))
 
 
 @shared_task

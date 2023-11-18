@@ -32,3 +32,8 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 class RegisterSerializerResponse(serializers.Serializer):
     email = serializers.CharField()
+
+class ResendRegisterOtpSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['email']

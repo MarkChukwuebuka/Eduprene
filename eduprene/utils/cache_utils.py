@@ -30,6 +30,6 @@ class CacheUtil:
             value_data, error = value_callback
 
             if value_data is not None:
-                data = cache.set(cache_key, value_data, timeout)
-
+                data = cache.get_or_set(cache_key, value_data, timeout)
+                
         return data, error
