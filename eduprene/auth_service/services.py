@@ -45,7 +45,7 @@ def add_registration_log(data):
 
     # Generate OTP and add to data
     data['otp'] = hashed_otp
-    data['otp_requested_at'] = dt.utcnow()
+    data['otp_requested_at'] = dt.now()
 
     if not log:
         log = RegisterLogs.objects.create(**data)
