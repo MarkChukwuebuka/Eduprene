@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime as dt
 
 from .models import RegisterLogs
@@ -21,11 +22,11 @@ def get_registration_log(email):
     return log, error
 
 
-def send_registration_otp(log):
+def send_registration_otp(log, otp):
     send_otp = email_queue.delay(
         email=log.email,
         subject=EMAIL_SUBJECTS['REGISTER_OTP_SENT'],
-        message=f"Your One Time Password is {log.otp}. This will expire in 5 minutes.",
+        message=f"Your One Time Password is {otp}. This will expire in 5 minutes.",
         event=NOTIFICATION_EVENTS['REGISTER_OTP']
     )
 
@@ -37,6 +38,9 @@ def add_registration_log(data):
     email = data['email']
     log, error = CacheUtil.get_cache_value_or_default(prefix=CACHE_PREFIXES['REGISTER_LOGS'], key=email,
                                                       value_callback=get_registration_log(email))
+
+    if error:
+        logging.error(error)
 
     if log and log.otp_verified:
         return log, False
@@ -61,23 +65,37 @@ def add_registration_log(data):
     log.otp = generated_otp
 
     # Send Email with OTP
-    send_registration_otp(log)
+    send_registration_otp(log, generate_otp)
 
     print(f"{generated_otp=}")
     return log, True
 
 
 def resend_registration_otp(data):
-    # Check if log exists
-    log = get_registration_log(data['email'])
+    email = data['email']
+    log, error = CacheUtil.get_cache_value_or_default(prefix=CACHE_PREFIXES['REGISTER_LOGS'], key=email,
+                                                      value_callback=get_registration_log(email))
+    
+    if error:
+        logging.error(error)
 
-    if log is None:
-        return "User does not exist.", False
+    if not log:
+        return f"Invalid User", False
 
-    otp_expired = check_otp_time_expired(log.otp_requested_at)
+    if log and log.otp_verified:
+        return f"User verified", False
+    
+    generated_otp, hashed_otp = generate_otp()
 
-    if otp_expired:
-        send_registration_otp(log)
-        return f"OTP sent to {log.email}", True
-    else:
-        return f"An OTP was sent to {log.email} less than 5 minutes ago.", False
+    # Set the value of the old log to the new hashed otp
+    log.otp = hashed_otp
+    log.save()
+
+    # Cache value for log
+    CacheUtil.set_cache_value(prefix=CACHE_PREFIXES['REGISTER_LOGS'], key=email, value=log)
+
+    # Send email with OTP
+    send_registration_otp(log, generated_otp)
+
+    print(f"{generated_otp=}")
+    return f"OTP sent to {log.email}", True

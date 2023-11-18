@@ -24,6 +24,8 @@ def email_queue(email, subject, message, event):
         }
         register_notification_queue(email, NOTIFICATION_CHANNELS['EMAIL'], event, data)
 
+        return mail
+
     except Exception as e:
         logging.error(e)
 
