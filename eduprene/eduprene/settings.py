@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'payments',
     'subscriptions',
     'notifications',
+    'landing_page_email_collector',
 ]
 
 MIDDLEWARE = [
