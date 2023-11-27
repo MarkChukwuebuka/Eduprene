@@ -1,2 +1,0 @@
-# Eduprene
-A Learning Platform
