@@ -1,15 +1,19 @@
 version: '3.8'
+volumes:
+  static:
+  
 services:
   eduprene_server:
     build:
       context: .
       dockerfile: Dockerfile
     image: eduprene_web
-    command: bash -c "python eduprene/manage.py makemigrations && python eduprene/manage.py migrate && python eduprene/manage.py runserver 0.0.0.0:8000"
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --noinput && gunicorn eduprene.wsgi:application --bind 0.0.0.0:8001"
     ports:
-      - 8002:8000
+      - 8001:8001
     volumes:
-      - .:/app
+      - ./static:/home/app/static
+      - ./.env:/home/app/.env
     depends_on:
       - redis
 
@@ -25,9 +29,10 @@ services:
       context: .
       dockerfile: Dockerfile
     image: eduprene_celery_worker
-    command: bash -c "cd eduprene && celery -A eduprene worker -l info"
+    command: bash -c "celery -A eduprene worker -l info"
     volumes:
-      - .:/app
+      - .:/home/app
+      - ./.env:/home/app/.env
     depends_on:
       - redis
 

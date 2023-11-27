@@ -5,10 +5,9 @@ from .models import RegisterLogs
 
 from constants.other_constants import EMAIL_SUBJECTS, NOTIFICATION_EVENTS, CACHE_PREFIXES
 
-from utils.otp_utils import check_otp_time_expired, generate_otp
+from utils.otp_utils import generate_otp
 from utils.cache_utils import CacheUtil
 
-from notifications.controllers import EmailService
 from notifications.tasks import email_queue
 
 
@@ -65,7 +64,7 @@ def add_registration_log(data):
     log.otp = generated_otp
 
     # Send Email with OTP
-    send_registration_otp(log, generate_otp)
+    send_registration_otp(log, generated_otp)
 
     print(f"{generated_otp=}")
     return log, True
