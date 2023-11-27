@@ -65,7 +65,7 @@ def add_registration_log(data):
     log.otp = generated_otp
 
     # Send Email with OTP
-    send_registration_otp(log, generate_otp)
+    send_registration_otp(log, generated_otp)
 
     print(f"{generated_otp=}")
     return log, True
