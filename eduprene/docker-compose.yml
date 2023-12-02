@@ -4,6 +4,7 @@ volumes:
   
 services:
   eduprene_server:
+    restart: on-failure
     build:
       context: .
       dockerfile: Dockerfile
@@ -16,6 +17,7 @@ services:
       - ./.env:/home/app/.env
     depends_on:
       - redis
+      - db
 
   redis:
     restart: always
@@ -35,4 +37,17 @@ services:
       - ./.env:/home/app/.env
     depends_on:
       - redis
+  
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: eduprene_db_user
+      POSTGRES_PASSWORD: Qpw5FdgcGRGRHs2t1cuhE0BuHWsPoGYE
+      POSTGRES_DB: eduprene_db
+    ports:
+      - 5432:5432
+
+
+
 
