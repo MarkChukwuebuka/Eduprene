@@ -136,7 +136,7 @@ STATIC_ROOT = os.getenv('STATIC_ROOT', 'home/app/static/')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'auth_service.User'
-print(os.environ.get("EMAIL_HOST"))
+print("Email Host: ", os.getenv("EMAIL_HOST"))
 # Email Setup
 EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND')
 EMAIL_HOST = os.environ.get('EMAIL_HOST')
