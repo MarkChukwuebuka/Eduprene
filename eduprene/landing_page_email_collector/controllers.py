@@ -7,7 +7,6 @@ from constants.other_constants import CONFIRMATION_EMAIL_SENT
 
 def email_collector_handler(request):
     try:
-        print('request')
         email_collector_serializer = EmailCollectorSerializer(data=request.data)
 
         if email_collector_serializer.is_valid():
