@@ -22,8 +22,7 @@ COPY . ${APP_HOME}
 
 RUN python manage.py makemigrations && \
     python manage.py migrate && \
-    python manage.py collectstatic --noinput && \
-    celery -A eduprene worker -l info --detach
+    python manage.py collectstatic --noinput
 
 EXPOSE 8001
 
