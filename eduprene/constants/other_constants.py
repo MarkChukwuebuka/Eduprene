@@ -1,6 +1,7 @@
 EMAIL_NOT_SENT = 'Email not sent, try again!'
 OTP_SENT_TO_EMAIL = 'OTP Sent to email'
 CONFIRMATION_EMAIL_SENT = "A confirmation email has been sent to you!"
+REGISTERED_SUCCESSFULLY = "Account created successfully!"
 
 REFERRAL_STATUS = {
     "PENDING": "Pending",
@@ -40,5 +41,6 @@ ERROR_MESSAGES = {
 }
 
 CACHE_PREFIXES = {
-    "REGISTER_LOGS": "REGISTER_LOGS"
+    "REGISTER_LOGS": "REGISTER_LOGS",
+    "USER": "USER"
 }

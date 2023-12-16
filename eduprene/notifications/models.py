@@ -1,7 +1,4 @@
 from django.db import models
-
-
-from auth_service.models import User
 from django.utils import timezone
 
 

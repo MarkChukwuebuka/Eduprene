@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
-
+from datetime import timedelta
 from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     # 3rd-party
     'rest_framework',
+    'rest_framework_simplejwt',
 
     # Self-generated
     'auth_service',
@@ -157,3 +158,14 @@ CACHES = {
 }
 
 CELERY_BROKER_URL = f"{os.getenv('REDIS_URI')}/{os.getenv('REDIS_CELERY_PORT')}"
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    # "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",)
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=6)
+}

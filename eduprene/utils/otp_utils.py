@@ -1,6 +1,6 @@
 import random
 from django.utils import timezone
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
 
 
 def generate_otp():
@@ -20,3 +20,7 @@ def check_otp_time_expired(otp_requested_at):
         return True
 
     return False
+
+
+def verify_otp(otp, hashed_otp):
+    return check_password(otp, hashed_otp)

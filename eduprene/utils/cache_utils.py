@@ -13,8 +13,9 @@ class CacheUtil:
 
         cache_key = CacheUtil.generate_cache_key(prefix, key)
         cache.set(cache_key, value, timeout)
-
+        value.save()
         return cache_key
+    
 
     @staticmethod
     def get_cache_value_or_default(prefix, key, value_callback=None, require_fresh=False, timeout=600):

@@ -37,3 +37,10 @@ class ResendRegisterOtpSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['email']
+
+class VerifyRegistrationOtpSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+    otp = serializers.CharField(required=True)
+
+class TokenResponseSerializer(serializers.Serializer):
+    token = serializers.CharField(required=True)

@@ -1,4 +1,5 @@
 import secrets
+from datetime import datetime as dt
 
 def generate_code(length=5):
     '''Generates *2 string length of the length passed in'''
@@ -16,3 +17,16 @@ def generate_referral_code(model):
         generate_referral_code(model)
 
     return referral_code
+
+
+def generate_unique_id():
+    current_time = dt.now().time()
+
+    # Convert the time to a string
+    time_string = str(current_time)
+
+    # Extract digits and concatenate them
+    concatenated_digits = ''.join(filter(str.isdigit, time_string))
+    token = (secrets.token_hex(3) + concatenated_digits).upper()
+
+    return token

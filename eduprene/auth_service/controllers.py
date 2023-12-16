@@ -1,8 +1,8 @@
 import logging
-from auth_service.serializers import RegisterSerializer, RegisterSerializerResponse, ResendRegisterOtpSerializer
-from auth_service.services import add_registration_log, resend_registration_otp
+from auth_service.serializers import RegisterSerializer, RegisterSerializerResponse, ResendRegisterOtpSerializer, VerifyRegistrationOtpSerializer, TokenResponseSerializer
+from auth_service.services import add_registration_log, resend_registration_otp, verify_registration_otp
 from response import bad_request_with_message, server_error, with_data, bad_request_with_data, with_message_and_data
-from constants.other_constants import OTP_SENT_TO_EMAIL
+from constants.other_constants import OTP_SENT_TO_EMAIL, REGISTERED_SUCCESSFULLY
 
 
 def register_handler(request):
@@ -44,6 +44,30 @@ def resend_register_otp_handler(request):
 
         return bad_request_with_data(data=resend_register_otp_serializer.errors)
         
+    except Exception as e:
+        logging.error(msg=e)
+        return server_error()
+
+def verify_registration_otp_handler(request):
+    try:
+        verify_registration_otp_serializer = VerifyRegistrationOtpSerializer(data=request.data)
+        if verify_registration_otp_serializer.is_valid():
+            data = verify_registration_otp_serializer.data
+            message, status = verify_registration_otp(data)
+
+            if not status:
+                return bad_request_with_message(message)
+            
+            verify_token_serializer = TokenResponseSerializer(data=message)
+            
+            if verify_token_serializer.is_valid():
+                return with_message_and_data(message=REGISTERED_SUCCESSFULLY, data=verify_token_serializer.data)
+            else:
+                logging.error(verify_token_serializer.errors)
+                return server_error()
+        
+        return bad_request_with_data(data=verify_registration_otp_serializer.errors)
+
     except Exception as e:
         logging.error(msg=e)
         return server_error()

@@ -17,17 +17,12 @@ class Banks(models.Model):
 
 
 class UserBankAccount(models.Model):
-    id = models.CharField(max_length=36, primary_key=True, null=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     account_number = models.CharField(max_length=11, null=True)
     account_name = models.CharField(max_length=100, null=True)
     bank = models.ForeignKey(Banks, on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(default=timezone.now)
 
-    def save(self, *args, **kwargs):
-        if not self.id:
-            self.id = str(uuid.uuid4().hex)
-        super().save(*args, **kwargs)
 
     class Meta:
-        verbose_name_plural = "Users Bank Accounts"
+        verbose_name_plural = "User's Bank Accounts"
