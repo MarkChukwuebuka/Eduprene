@@ -44,7 +44,7 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="{% url "home" %}">
+					<a class="navbar-brand" href="{% url "landing" %}">
 						<img class="img-responsive" src="img/logo.png" alt="logo">
 					</a>
 				</div>
@@ -82,8 +82,9 @@
 					<h1>Eduprene</h1>
 					<p>Earn money online while reading your favorite books...</p>
 					<div class="news-letter">
-						<form id="newsletter" method="POST">
+						<form method="POST">
 							{% csrf_token %}
+							{% include "partials/messages.html" %}
 							<div>
 								<input placeholder="First Name" name="first-name" type="text" required>
 							</div>

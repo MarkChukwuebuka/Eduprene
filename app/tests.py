@@ -18,4 +18,3 @@ class LandingPageUserModelTest(TestCase):
         self.assertEqual(self.lpu.email, 'test@example.com')
         self.assertEqual(self.lpu.referred_by, None)
 
-
